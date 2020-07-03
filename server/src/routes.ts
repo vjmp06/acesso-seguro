@@ -6,6 +6,8 @@ import multerConfig from './config/multer';
 
 import PointsController from './controllers/PointsController';
 import ItemsController from './controllers/ItemsController';
+import AccessController from './controllers/AccessController';
+import UsersController from './controllers/UsersController';
 
 //index, show, create ,update, delete
 
@@ -14,9 +16,13 @@ const upload = multer(multerConfig);
 
 const pointsController = new PointsController();
 const itemsController = new ItemsController();
+const usersController = new UsersController();
+const accessController = new AccessController();
 
+routes.get('/users', usersController.index);
 
-
+routes.get('/access_control', accessController.index);
+routes.post('/access_control', accessController.create);
 
 routes.get('/items', itemsController.index);
 

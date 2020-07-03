@@ -1,0 +1,36 @@
+import Knex from 'knex';
+
+export async function seed(knex: Knex) {
+  await knex('users').insert([
+    {nome:"Miguel Costa",cpf:"695.104.720-00",email:"miguel@hotmail.com",telefone:"994509583"},
+    {nome:"Sophia Silva",cpf:"024.267.410-07",email:"sophia@hotmail.com",telefone:"994506607"},
+    {nome:"Davi Assunção",cpf:"000.043.700-07",email:"davi@assuncao",telefone:"994504427"},
+    {nome:"Alice Leitão",cpf:"271.957.510-07",email:"alice@hotmail.com",telefone:"994505033"},
+    {nome:"Arthur Gomes",cpf:"227.810.300-82",email:"arthur@hotmail.com",telefone:"994504495"},
+    {nome:"Julia Cardoso",cpf:"598.270.680-91",email:"julia@hotmail.com",telefone:"994504595"},
+    {nome:"Pedro Rodrigues",cpf:"713.729.970-91",email:"pedro@hotmail.com",telefone:"994503119"},
+    {nome:"Isabella Lessa",cpf:"541.068.860-06",email:"isabella@hotmail.com",telefone:"994503117"},
+    {nome:"Gabriel Andrade",cpf:"334.685.540-60",email:"gabriel@hotmail.com",telefone:"994507265"},
+    {nome:"Manuela Santos",cpf:"649.379.960-02",email:"manuela@hotmail.com",telefone:"994505969"},
+    {nome:"Bernardo Lima ",cpf:"198.906.050-15",email:"bernardo@hotmail.com",telefone:"994507156"},
+    {nome:"Laura Pereira ",cpf:"418.025.230-90",email:"laura@hotmail.com",telefone:"994503251"},
+    {nome:"Lucas Alves ",cpf:"101.993.820-00",email:"lucas@hotmail.com",telefone:"994508272"},
+    {nome:"Luiza Ferreira ",cpf:"041.377.310-80",email:"luiza@hotmail.com",telefone:"994504739"},
+    {nome:"Matheus Souza ",cpf:"982.874.330-29",email:"matheus@hotmail.com",telefone:"994506536"},
+    {nome:"Mariana Oliveira ",cpf:"136.375.740-71",email:"mariana@hotmail.com",telefone:"994504719"},
+    {nome:"Rafael Andrade",cpf:"072.396.950-77",email:"rafael@hotmail.com",telefone:"994501872"},
+    {nome:"Lara Barbosa",cpf:"751.325.130-42",email:"lara@hotmail.com",telefone:"994507713"},
+    {nome:"Heitor Barros",cpf:"946.713.680-56",email:"heitor@hotmail.com",telefone:"994502685"},
+    {nome:"Maria Luiza Borges",cpf:"509.576.930-10",email:"maria@hotmail.com",telefone:"994506467"},
+    {nome:"Enzo Batista",cpf:"454.707.240-00",email:"enzo@hotmail.com",telefone:"994509614"},
+    {nome:"Beatriz Cardoso",cpf:"214.912.700-80",email:"beatriz@hotmail.com",telefone:"994506038"},
+    {nome:"Guilherme Carvalho",cpf:"110.684.830-67",email:"guilherme@hotmail.com",telefone:"994507833"},
+    {nome:"Helena Castro",cpf:"844.793.860-33",email:"helena@hotmail.com",telefone:"994502297"},
+    {nome:"Nicolas Dias",cpf:"097.394.730-67",email:"nicolas@hotmail.com",telefone:"994508880"},
+    {nome:"Maria Eduarda Duarte",cpf:"572.496.220-99",email:"maria@hotmail.com",telefone:"994502123"},
+    {nome:"Lorenzo Freitas Garcia",cpf:"427.955.810-86",email:"lorenzo@hotmail.com",telefone:"994504116"},
+    {nome:"Giovanna Gonçalves",cpf:"006.916.750-82",email:"giovanna@hotmail.com",telefone:"994504919"},
+    {nome:"Gustavo Lopes",cpf:"789.034.820-77",email:"gustavo@hotmail.com",telefone:"994503713"},
+    {nome:"Valentina Machado",cpf:"730.640.400-81",email:"valentina@hotmail.com",telefone:"994509491"},
+  ]);
+}
