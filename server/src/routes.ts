@@ -21,6 +21,8 @@ const accessController = new AccessController();
 
 routes.get('/users', usersController.index);
 
+routes.get('/users/:id', usersController.show);
+
 routes.get('/access_control', accessController.index);
 routes.post('/access_control', accessController.create);
 
