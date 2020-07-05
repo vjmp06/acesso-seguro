@@ -3,8 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './pages/Home';
-import Points from './pages/Points';
-import Detail from './pages/Detail';
+import QRCode from './pages/QRCode';
+import Checagem from './pages/Checagem';
 
 const AppStack = createStackNavigator();
 
@@ -15,13 +15,13 @@ const Routes = () => {
         headerMode="none"
         screenOptions={{
           cardStyle: {
-            backgroundColor: '#f0f0f5'
+            backgroundColor: '#f5f5f5'
           }
         }}
       >
         <AppStack.Screen name="Home" component={Home}/>
-        <AppStack.Screen name="Points" component={Points}/>
-        <AppStack.Screen name="Detail" component={Detail}/>
+        <AppStack.Screen name="QRCode" component={QRCode}/>
+        <AppStack.Screen name="Checagem" component={Checagem}/>
       </AppStack.Navigator>
     </NavigationContainer>
   )

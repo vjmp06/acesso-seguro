@@ -1,10 +1,12 @@
-import React, { useState, useEffect }  from 'react';
-import { View, Button, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Alert, CheckBox } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useNavigation } from '@react-navigation/native';
 
-const QRCode = () => {
+export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -13,9 +15,24 @@ const QRCode = () => {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    Alert.alert(
+      "Acesso Seguro Informa:",
+      `O código referente ao CPF ${data} foi escaneado.`,
+      [
+        {
+          text: "Voltar",
+          onPress: () => setScanned(false),
+          style: "cancel"
+        },
+        { 
+          text: "Iniciar Checagem", 
+          onPress: () => navigation.navigate('Checagem', { id: data }), 
+        }
+      ],
+      { cancelable: false }
+    );
   };
 
   if (hasPermission === null) {
@@ -33,82 +50,13 @@ const QRCode = () => {
         justifyContent: 'flex-end',
       }}>
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarCodeScanned={ scanned ? undefined : handleBarCodeScanned}
+        barCodeTypes={[
+          BarCodeScanner.Constants.BarCodeType.qr,
+        ]}
+
         style={StyleSheet.absoluteFillObject}
       />
-
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 32,
-  },
-
-  main: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  title: {
-    color: '#322153',
-    fontSize: 32,
-    fontFamily: 'Ubuntu_700Bold',
-    maxWidth: 260,
-    marginTop: 64,
-  },
-
-  description: {
-    color: '#6C6C80',
-    fontSize: 16,
-    marginTop: 16,
-    fontFamily: 'Roboto_400Regular',
-    maxWidth: 260,
-    lineHeight: 24,
-  },
-
-  footer: {},
-
-  select: {},
-
-  input: {
-    height: 60,
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    marginBottom: 8,
-    paddingHorizontal: 24,
-    fontSize: 16,
-  },
-
-  button: {
-    backgroundColor: '#34CB79',
-    height: 60,
-    flexDirection: 'row',
-    borderRadius: 10,
-    overflow: 'hidden',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-
-  buttonIcon: {
-    height: 60,
-    width: 60,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
-  buttonText: {
-    flex: 1,
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: '#FFF',
-    fontFamily: 'Roboto_500Medium',
-    fontSize: 16,
-  }
-});
-
-export default Home;
