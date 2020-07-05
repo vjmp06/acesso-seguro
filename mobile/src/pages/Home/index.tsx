@@ -1,137 +1,172 @@
 import React, { useState } from 'react';
-import { Feather as Icon } from '@expo/vector-icons';
-import { View, ImageBackground, Text, Image, TextInput, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
-import { RectButton} from 'react-native-gesture-handler';
-import { useNavigation} from '@react-navigation/native';
+import Constants from 'expo-constants';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { SvgUri } from 'react-native-svg';
 
 const Home = () => {
-  const [uf, setUf] = useState('');
-  const [city, setCity] = useState('');
+  const [selectedOption, setSelectedOption] = useState<number>(0);
+  const [code, setCode] = useState('');
   const navigation = useNavigation();
 
-  function handleNavigateToPoints() {
-    navigation.navigate('Points', {
-      uf,
-      city,
-    });
+
+  function handleSelectOption(id: number) {
+
+    if (!(selectedOption === id)) {
+      setSelectedOption(id);
+    }
   }
 
-  return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ImageBackground 
-        source={require('../../assets/home-background.png')} 
-        style={styles.container}
-        imageStyle={{ width: 274, height: 368 }}
-      >
-        <View style={styles.main}>
-          <Image source={require('../../assets/logo.png')} />
-          <View>
-            <Text style={styles.title}>Seu marketplace de coleta de resíduos</Text>
-            <Text style={styles.description}>Ajudamos pessoas a encontrarem pontos de coleta de forma eficiente</Text>
-          </View>
-        </View>
+  
+  function handleNavigateToChecagem(id: string) {
+    navigation.navigate('Checagem', { id: id });
+  }
 
-        <View style={styles.footer}>
-          <TextInput 
+  
+  function handleNavigateToQRCode() {
+    navigation.navigate('QRCode');
+  }
+
+
+  return (
+    <>
+      <View style={styles.container}>
+        <Text style={styles.title}>Bem vindo.</Text>
+        <Text style={styles.description}>Utilize uma das opções abaixo para identificar o funcionário.</Text>
+        <View style={styles.itemsContainer}>
+          <TouchableOpacity
+            style={[
+              styles.item,
+              (selectedOption === 1) ? styles.selectedItem : {}
+            ]}
+            onPress={() => {handleSelectOption(1); handleNavigateToQRCode()}}
+            activeOpacity={0.6}
+          >
+            <SvgUri width={42} height={42} uri={'http://192.168.0.2:3333/uploads/qrcode.svg'} />
+            <Text style={styles.itemTitle}>Ler QR code</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.item,
+              (selectedOption === 2) ? styles.selectedItem : {}
+            ]}
+            onPress={() => handleSelectOption(2)}
+            activeOpacity={0.6}
+          >
+            <SvgUri width={42} height={42} uri={'http://192.168.0.2:3333/uploads/cpf.svg'} />
+            <Text style={styles.itemTitle}>Digitar CPF</Text>
+          </TouchableOpacity>
+
+        </View>
+        <View style={(selectedOption === 2) ? {display: 'flex'} : {display: 'none'}}>
+          <TextInput
             style={styles.input}
-            placeholder="Digite a UF"
-            value={uf}
-            maxLength={2}
+            placeholder="Digite aqui o CPF"
+            value={code}
+            maxLength={14}
+            keyboardType='phone-pad'
             autoCapitalize="characters"
             autoCorrect={false}
-            onChangeText={setUf}
+            onChangeText={setCode}
           />
-          <TextInput 
-            style={styles.input}
-            placeholder="Digite a cidade"
-            value={city}
-            autoCorrect={false}
-            onChangeText={setCity}
-          />
-          
-          <RectButton style={styles.button} onPress={handleNavigateToPoints}>
-            <View style={styles.buttonIcon}>
-              <Text>
-                <Icon name="arrow-right" color="#FFF" size={24} />
-              </Text>
-            </View>
+
+          <TouchableOpacity style={styles.button} onPress={() => {handleNavigateToChecagem(code)}}>
             <Text style={styles.buttonText}>
-              Entrar
+              Iniciar Checagem
             </Text>
-          </RectButton>
+          </TouchableOpacity>
         </View>
-      </ImageBackground>
-    </KeyboardAvoidingView>
+      </View>
+    </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 32,
-  },
-
-  main: {
-    flex: 1,
-    justifyContent: 'center',
+    paddingHorizontal: 32,
+    paddingTop: 20 + Constants.statusBarHeight,
   },
 
   title: {
-    color: '#322153',
-    fontSize: 32,
+    fontSize: 20,
     fontFamily: 'Ubuntu_700Bold',
-    maxWidth: 260,
-    marginTop: 64,
+    marginTop: 24,
   },
 
   description: {
     color: '#6C6C80',
     fontSize: 16,
-    marginTop: 16,
+    marginTop: 4,
     fontFamily: 'Roboto_400Regular',
-    maxWidth: 260,
-    lineHeight: 24,
   },
 
-  footer: {},
+  itemsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 80,
+    marginBottom: 32,
+  },
 
-  select: {},
+  item: {
+    backgroundColor: '#EAF7FB',
+    borderWidth: 2,
+    borderColor: '#EAF7FB',
+    height: 120,
+    width: 120,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 16,
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+
+    textAlign: 'center',
+  },
+
+  selectedItem: {
+    borderColor: '#08376B',
+    borderWidth: 2,
+  },
+
+  itemTitle: {
+    fontFamily: 'Roboto_400Regular',
+    textAlign: 'center',
+    fontSize: 13,
+  },
 
   input: {
     height: 60,
     backgroundColor: '#FFF',
-    borderRadius: 10,
-    marginBottom: 8,
+    borderRadius: 8,
+    marginTop: 30,
     paddingHorizontal: 24,
     fontSize: 16,
   },
-
+  
   button: {
-    backgroundColor: '#34CB79',
-    height: 60,
+    backgroundColor: '#35C0ED',
+    height: 34,
     flexDirection: 'row',
-    borderRadius: 10,
+    borderRadius: 8,
     overflow: 'hidden',
     alignItems: 'center',
-    marginTop: 8,
-  },
-
-  buttonIcon: {
-    height: 60,
-    width: 60,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginTop: 55,
+    paddingVertical: 24,
+    marginHorizontal: 50,
   },
 
   buttonText: {
     flex: 1,
     justifyContent: 'center',
     textAlign: 'center',
-    color: '#FFF',
+    color: '#08376B',
     fontFamily: 'Roboto_500Medium',
-    fontSize: 16,
-  }
+    fontSize: 18,
+  },
 });
 
 export default Home;
