@@ -1,17 +1,28 @@
 import { Request, Response } from 'express';
 import knex from '../database/connection';
+import Utils from '../utils/Utils';
 
 class AccessController {
+  
+  
   async index (request: Request, response: Response) {
-    //const { uf, city, items } = request.query;
+    let { dataInicial, dataFinal, conforme } = request.query;
+    console.log(request.query)
+    dataInicial = Utils.isNullOrUndefined(dataInicial) ?
+       (new Date(new Date().setHours(24 * -30))).toISOString() :
+      new Date(dataInicial as string).toISOString();
+    
 
-    // const parsedItems = String(items)
-    //   .split(',')
-    //   .map(item => Number(item.trim()));
-
+    dataFinal = Utils.isNullOrUndefined(dataFinal) ? 
+      new Date().toISOString() : new Date(dataFinal as string).toISOString();
+    
+    conforme = Utils.isNullOrUndefined(conforme) ? '' : conforme;
+    console.log(dataInicial);
+    console.log(dataFinal);
     const control_access = await knex('control_access')
       .join('users', 'users_id', '=', 'users.id')
-      .select('*');
+      .where('conforme', 'like', `%${conforme}%`)
+      .select('users.nome', 'users.cpf', 'users.telefone', 'users.email', 'control_access.passagem', 'control_access.conforme');
     
     // const serializedPoints = points.map(point => {
     //   return {
@@ -30,7 +41,6 @@ class AccessController {
       higienizacao,
       temperatura,
       conforme,
-      passagem,
       users_id
     } = request.body;
   
@@ -44,11 +54,10 @@ class AccessController {
       higienizacao,
       temperatura,
       conforme,
-      passagem,
       users_id
     });
   
-    return response.json(access_control);
+    return response.json(access_control[0]);
   }
 }
 

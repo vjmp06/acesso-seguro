@@ -7,7 +7,7 @@ export async function up(knex: Knex) {
     table.string('higienizacao').notNullable();
     table.string('temperatura').notNullable();
     table.string('conforme').notNullable();
-    table.string('passagem').defaultTo(new Date().toISOString());
+    table.date('passagem').defaultTo(Date.now());
     
     table.integer('users_id')
       .notNullable()
